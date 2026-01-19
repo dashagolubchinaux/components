@@ -8,16 +8,7 @@ set -e
 GITHUB_RAW_URL="https://raw.githubusercontent.com/dashagolubchinaux/components/main/nexar-design-system.md"
 GITHUB_CSS_URL="https://raw.githubusercontent.com/dashagolubchinaux/components/main/nexar-theme.css"
 GITHUB_FONTS_URL="https://raw.githubusercontent.com/dashagolubchinaux/components/main/fonts"
-GITHUB_UI_URL="https://raw.githubusercontent.com/dashagolubchinaux/components/main/ui"
-VERSION="1.5.0"
-
-# Core UI components to pre-install (most commonly used)
-CORE_COMPONENTS=(
-  "button.tsx"
-  "input.tsx"
-  "label.tsx"
-  "card.tsx"
-)
+VERSION="1.6.0"
 
 # Font files to download
 FONTS=(
@@ -189,7 +180,7 @@ EOF
   fi
 fi
 
-# Create components folder and download core components
+# Create components folder
 if [ -d "$PROJECT_DIR/src" ]; then
   mkdir -p "$PROJECT_DIR/src/components/ui"
   COMPONENTS_PATH="src/components/ui"
@@ -197,18 +188,13 @@ else
   mkdir -p "$PROJECT_DIR/components/ui"
   COMPONENTS_PATH="components/ui"
 fi
-
-echo "Downloading core UI components..."
-for component in "${CORE_COMPONENTS[@]}"; do
-  curl -sL "$GITHUB_UI_URL/$component" -o "$PROJECT_DIR/$COMPONENTS_PATH/$component"
-done
-echo "  ✓ Installed ${#CORE_COMPONENTS[@]} core components to $COMPONENTS_PATH/"
+echo "  ✓ Created $COMPONENTS_PATH/"
 
 # Install dependencies
 echo ""
 echo "Installing dependencies..."
 
-DEPS="clsx tailwind-merge class-variance-authority @radix-ui/react-slot @radix-ui/react-label @phosphor-icons/react"
+DEPS="clsx tailwind-merge class-variance-authority @radix-ui/react-slot @phosphor-icons/react"
 
 if [ "$HAS_TAILWIND" = false ]; then
   DEPS="tailwindcss $DEPS"
@@ -255,45 +241,6 @@ else
   echo "  @import \"./$CSS_PATH\";"
 fi
 
-# Create example login page to show the AI the expected pattern
-echo "Creating example page..."
-if [ -d "$PROJECT_DIR/src/app" ]; then
-  mkdir -p "$PROJECT_DIR/src/app/login"
-  cat > "$PROJECT_DIR/src/app/login/page.tsx" << 'EOF'
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card"
-
-export default function LoginPage() {
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-background p-4">
-      <Card className="w-full max-w-md">
-        <CardHeader>
-          <CardTitle className="font-heading text-2xl">Welcome back</CardTitle>
-          <CardDescription>Enter your credentials to sign in</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
-            <Input id="email" type="email" placeholder="name@example.com" />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
-            <Input id="password" type="password" placeholder="Enter your password" />
-          </div>
-        </CardContent>
-        <CardFooter>
-          <Button className="w-full">Sign in</Button>
-        </CardFooter>
-      </Card>
-    </div>
-  )
-}
-EOF
-  echo "  ✓ Created src/app/login/page.tsx (example page)"
-fi
-
 echo ""
 echo "========================================"
 echo "  Setup Complete!"
@@ -305,8 +252,18 @@ echo "  • CLAUDE.md"
 echo "  • .windsurfrules/nexar-design-system.md"
 echo "  • $CSS_PATH (theme + fonts)"
 echo "  • $FONTS_PATH/ (20 font files)"
-echo "  • $COMPONENTS_PATH/ (Button, Input, Label, Card)"
-echo "  • src/app/login/page.tsx (example page)"
+echo "  • $COMPONENTS_PATH/ (ready for components)"
 echo ""
-echo "You're all set! Try: npm run dev and visit http://localhost:3000/login"
+echo "========================================"
+echo "  IMPORTANT: Start every AI chat with:"
+echo "========================================"
+echo ""
+echo "  Read CLAUDE.md first. Then: [your request]"
+echo ""
+echo "Example prompts:"
+echo "  • Read CLAUDE.md first. Then create a login page"
+echo "  • Read CLAUDE.md first. Then build a dashboard with sidebar"
+echo "  • Read CLAUDE.md first. Then add a data table component"
+echo ""
+echo "This works with any AI tool (Claude, Cursor, VS Code, Windsurf, etc.)"
 echo ""
