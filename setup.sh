@@ -7,7 +7,32 @@ set -e
 
 GITHUB_RAW_URL="https://raw.githubusercontent.com/dashagolubchinaux/components/main/nexar-design-system.md"
 GITHUB_CSS_URL="https://raw.githubusercontent.com/dashagolubchinaux/components/main/nexar-theme.css"
+GITHUB_FONTS_URL="https://raw.githubusercontent.com/dashagolubchinaux/components/main/fonts"
 VERSION="1.4.0"
+
+# Font files to download
+FONTS=(
+  "Hellix-Thin.otf"
+  "Hellix-Light.otf"
+  "Hellix-Regular.otf"
+  "Hellix-Medium.otf"
+  "Hellix-SemiBold.otf"
+  "Hellix-Bold.otf"
+  "Hellix-ExtraBold.otf"
+  "Hellix-Black.otf"
+  "Roobert-Light.otf"
+  "Roobert-LightItalic.otf"
+  "Roobert-Regular.otf"
+  "Roobert-RegularItalic.otf"
+  "Roobert-Medium.otf"
+  "Roobert-MediumItalic.otf"
+  "Roobert-SemiBold.otf"
+  "Roobert-SemiBoldItalic.otf"
+  "Roobert-Bold.otf"
+  "Roobert-BoldItalic.otf"
+  "Roobert-Heavy.otf"
+  "Roobert-HeavyItalic.otf"
+)
 
 echo ""
 echo "========================================"
@@ -113,6 +138,21 @@ else
 fi
 echo "  ✓ Created $CSS_PATH"
 
+# Download fonts
+echo "Downloading fonts..."
+if [ -d "$PROJECT_DIR/src" ]; then
+  mkdir -p "$PROJECT_DIR/src/styles/fonts"
+  FONTS_PATH="src/styles/fonts"
+else
+  mkdir -p "$PROJECT_DIR/styles/fonts"
+  FONTS_PATH="styles/fonts"
+fi
+
+for font in "${FONTS[@]}"; do
+  curl -sL "$GITHUB_FONTS_URL/$font" -o "$PROJECT_DIR/$FONTS_PATH/$font"
+done
+echo "  ✓ Downloaded ${#FONTS[@]} font files to $FONTS_PATH/"
+
 # Create lib/utils.ts if it doesn't exist
 if [ ! -f "$PROJECT_DIR/src/lib/utils.ts" ] && [ ! -f "$PROJECT_DIR/lib/utils.ts" ]; then
   echo "Creating utility function..."
@@ -187,6 +227,7 @@ echo ""
 echo "Files created:"
 echo "  • $DEFAULT_PATH (AI rules)"
 echo "  • $CSS_PATH (theme variables)"
+echo "  • $FONTS_PATH/ (20 font files)"
 echo "  • $COMPONENTS_PATH/ (for your components)"
 echo ""
 echo "Using a different AI tool? Move the rules file:"

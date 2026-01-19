@@ -5,6 +5,176 @@
  * Or import directly: @import "./styles/nexar-theme.css";
  */
 
+/* =============================================================================
+   FONT DEFINITIONS
+   ============================================================================= */
+
+/* Hellix - Heading font */
+@font-face {
+  font-family: "Hellix";
+  src: url("./fonts/Hellix-Thin.otf") format("opentype");
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Hellix";
+  src: url("./fonts/Hellix-Light.otf") format("opentype");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Hellix";
+  src: url("./fonts/Hellix-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Hellix";
+  src: url("./fonts/Hellix-Medium.otf") format("opentype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Hellix";
+  src: url("./fonts/Hellix-SemiBold.otf") format("opentype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Hellix";
+  src: url("./fonts/Hellix-Bold.otf") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Hellix";
+  src: url("./fonts/Hellix-ExtraBold.otf") format("opentype");
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Hellix";
+  src: url("./fonts/Hellix-Black.otf") format("opentype");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Roobert - Body font */
+@font-face {
+  font-family: "Roobert";
+  src: url("./fonts/Roobert-Light.otf") format("opentype");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Roobert";
+  src: url("./fonts/Roobert-LightItalic.otf") format("opentype");
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Roobert";
+  src: url("./fonts/Roobert-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Roobert";
+  src: url("./fonts/Roobert-RegularItalic.otf") format("opentype");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Roobert";
+  src: url("./fonts/Roobert-Medium.otf") format("opentype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Roobert";
+  src: url("./fonts/Roobert-MediumItalic.otf") format("opentype");
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Roobert";
+  src: url("./fonts/Roobert-SemiBold.otf") format("opentype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Roobert";
+  src: url("./fonts/Roobert-SemiBoldItalic.otf") format("opentype");
+  font-weight: 600;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Roobert";
+  src: url("./fonts/Roobert-Bold.otf") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Roobert";
+  src: url("./fonts/Roobert-BoldItalic.otf") format("opentype");
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Roobert";
+  src: url("./fonts/Roobert-Heavy.otf") format("opentype");
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Roobert";
+  src: url("./fonts/Roobert-HeavyItalic.otf") format("opentype");
+  font-weight: 800;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* =============================================================================
+   DESIGN TOKENS
+   ============================================================================= */
+
 /* Nexar Design System Tokens */
 :root {
   /* Fonts */
