@@ -44,13 +44,34 @@ You are building UI for a project that uses the **Nexar Design System**. Follow 
 
 ## CRITICAL RULES
 
-1. **Fetch components from repo** — Get component code from the Nexar repo (see Component Library section)
-2. **Use exact Tailwind classes** — They map to CSS variables
-3. **Never import from `@getnexar/design-system`** — The package doesn't exist in user projects
-4. **UI elements must use CSS variables** — Never hardcode colors for UI chrome
-5. **Follow the spacing scale** — No arbitrary spacing values
-6. **Include all interaction states** — hover, focus-visible, active, disabled
-7. **Use `font-heading` for all headings** — h1, h2, h3, card titles, modal titles
+### Component Decision Tree (MUST FOLLOW)
+
+**Before creating ANY UI component, check this list:**
+
+```
+EXISTING COMPONENTS (fetch from repo, DO NOT recreate):
+Button, Input, Textarea, Label, Card, Badge, Avatar, Separator, Skeleton,
+Spinner, Kbd, Checkbox, Switch, RadioGroup, Select, NativeSelect, Combobox,
+MultiSelect, Slider, InputOTP, DatePicker, Calendar, Form, Field, FormField,
+FormDescription, Dialog, Sheet, AlertDialog, Drawer, Popover, HoverCard,
+Tooltip, DropdownMenu, ContextMenu, Menubar, Command, Tabs, Accordion,
+Collapsible, NavigationMenu, Breadcrumb, Pagination, Sidebar, Table,
+DataTable, ScrollArea, Progress, Chart, AspectRatio, Carousel, Empty,
+Alert, Resizable, ButtonGroup, InputGroup, Toggle, ToggleGroup, Sonner
+```
+
+**Decision:**
+1. **Component IS in the list above?** → FETCH it from `https://raw.githubusercontent.com/dashagolubchinaux/components/main/ui/[component].tsx` and save to `src/components/ui/`. DO NOT build your own version.
+2. **Component is NOT in the list?** → Create it yourself following the design system styles (colors, fonts, spacing, radius from this file).
+
+### Other Rules
+
+1. **Use exact Tailwind classes** — They map to CSS variables
+2. **Never import from `@getnexar/design-system`** — The package doesn't exist in user projects
+3. **UI elements must use CSS variables** — Never hardcode colors for UI chrome
+4. **Follow the spacing scale** — No arbitrary spacing values
+5. **Include all interaction states** — hover, focus-visible, active, disabled
+6. **Use `font-heading` for all headings** — h1, h2, h3, card titles, modal titles
 
 ---
 
