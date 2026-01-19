@@ -28,6 +28,15 @@ You are building UI for a project that uses the **Nexar Design System**. Follow 
 
 ## Quick Reference
 
+**BRAND COLOR: PURPLE** — Use `bg-primary`, `text-primary`, `border-primary` for:
+- Primary buttons (default `<Button>` variant)
+- Active/selected states
+- Focus rings
+- Links
+- Any interactive highlight
+
+**Never use black for primary actions or active states.**
+
 | Property | Value |
 |----------|-------|
 | **Heading font** | `font-heading` (Hellix) — h1, h2, h3, all titles |
