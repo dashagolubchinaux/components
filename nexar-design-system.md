@@ -33,6 +33,7 @@ You are building UI for a project that uses the **Nexar Design System**. Follow 
 | **Heading font** | `font-heading` (Hellix) — h1, h2, h3, all titles |
 | **Body font** | `font-sans` (Roobert) — everything else |
 | **Primary color** | Purple via `bg-primary` |
+| **Primary CTA button** | `<Button>` (default variant) — PURPLE, not black |
 | **Default radius** | `rounded-xl` (cards), `rounded-lg` (smaller) |
 | **Icon sizes** | `size-4` (16px) or `size-5` (20px) |
 | **Card padding** | `p-6` or `p-8` |
