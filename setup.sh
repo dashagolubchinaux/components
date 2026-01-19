@@ -104,35 +104,24 @@ PKG_MANAGER=$(detect_package_manager)
 echo "  ✓ Package manager: $PKG_MANAGER"
 echo ""
 
-# Detect AI tool and set default location
-if [ -d "$PROJECT_DIR/.cursor" ] || command -v cursor &> /dev/null; then
-  DEFAULT_TOOL="cursor"
-  DEFAULT_PATH=".cursor/rules/nexar-design-system.mdc"
-elif [ -d "$PROJECT_DIR/.claude" ]; then
-  DEFAULT_TOOL="claude"
-  DEFAULT_PATH="CLAUDE.md"
-elif [ -d "$PROJECT_DIR/.windsurfrules" ]; then
-  DEFAULT_TOOL="windsurf"
-  DEFAULT_PATH=".windsurfrules/nexar-design-system.md"
-else
-  DEFAULT_TOOL="cursor"
-  DEFAULT_PATH=".cursor/rules/nexar-design-system.mdc"
-fi
+# Install rules for ALL AI tools (user might switch between them)
+echo "Installing AI rules for all supported tools..."
 
-echo "Detected AI tool: $DEFAULT_TOOL"
-echo "Installing rules to: $DEFAULT_PATH"
+# Cursor
+mkdir -p "$PROJECT_DIR/.cursor/rules"
+curl -sL "$GITHUB_RAW_URL" -o "$PROJECT_DIR/.cursor/rules/nexar-design-system.mdc"
+echo "  ✓ Cursor: .cursor/rules/nexar-design-system.mdc"
+
+# Claude Code (VS Code extension)
+curl -sL "$GITHUB_RAW_URL" -o "$PROJECT_DIR/CLAUDE.md"
+echo "  ✓ Claude Code: CLAUDE.md"
+
+# Windsurf
+mkdir -p "$PROJECT_DIR/.windsurfrules"
+curl -sL "$GITHUB_RAW_URL" -o "$PROJECT_DIR/.windsurfrules/nexar-design-system.md"
+echo "  ✓ Windsurf: .windsurfrules/nexar-design-system.md"
+
 echo ""
-
-# Create directory if needed
-PARENT_DIR=$(dirname "$DEFAULT_PATH")
-if [ "$PARENT_DIR" != "." ]; then
-  mkdir -p "$PROJECT_DIR/$PARENT_DIR"
-fi
-
-# Download the rules file
-echo "Downloading Nexar Design System rules..."
-curl -sL "$GITHUB_RAW_URL" -o "$PROJECT_DIR/$DEFAULT_PATH"
-echo "  ✓ Created $DEFAULT_PATH"
 
 # Download CSS theme file
 echo "Downloading theme styles..."
@@ -228,23 +217,7 @@ esac
 
 echo "  ✓ Dependencies installed"
 
-echo ""
-echo "========================================"
-echo "  Setup Complete!"
-echo "========================================"
-echo ""
-echo "Files created:"
-echo "  • $DEFAULT_PATH (AI rules)"
-echo "  • $CSS_PATH (theme variables)"
-echo "  • $FONTS_PATH/ (20 font files)"
-echo "  • $COMPONENTS_PATH/ (for your components)"
-echo ""
-echo "Using a different AI tool? Move the rules file:"
-echo "  • Cursor:      .cursor/rules/nexar-design-system.mdc"
-echo "  • Claude Code: CLAUDE.md (project root)"
-echo "  • Windsurf:    .windsurfrules/nexar-design-system.md"
-echo ""
-# Auto-add CSS import to globals.css
+# Replace globals.css with clean Nexar version (removes Next.js defaults that conflict)
 GLOBALS_FILE=""
 if [ -f "$PROJECT_DIR/src/app/globals.css" ]; then
   GLOBALS_FILE="$PROJECT_DIR/src/app/globals.css"
@@ -255,32 +228,31 @@ elif [ -f "$PROJECT_DIR/app/globals.css" ]; then
 fi
 
 if [ -n "$GLOBALS_FILE" ]; then
-  # Check if import already exists
-  if ! grep -q "nexar-theme.css" "$GLOBALS_FILE"; then
-    echo "Updating globals.css..."
-    # Add import after @import "tailwindcss" line
-    if grep -q '@import "tailwindcss"' "$GLOBALS_FILE"; then
-      sed -i.bak 's|@import "tailwindcss";|@import "tailwindcss";\n@import "'"$CSS_IMPORT"'";|' "$GLOBALS_FILE"
-      rm -f "$GLOBALS_FILE.bak"
-      echo "  ✓ Added CSS import to globals.css"
-    elif grep -q "@import 'tailwindcss'" "$GLOBALS_FILE"; then
-      sed -i.bak "s|@import 'tailwindcss';|@import 'tailwindcss';\n@import '$CSS_IMPORT';|" "$GLOBALS_FILE"
-      rm -f "$GLOBALS_FILE.bak"
-      echo "  ✓ Added CSS import to globals.css"
-    else
-      # Tailwind import not found, add at top of file
-      echo "@import \"$CSS_IMPORT\";" | cat - "$GLOBALS_FILE" > temp && mv temp "$GLOBALS_FILE"
-      echo "  ✓ Added CSS import to globals.css (at top)"
-    fi
-  else
-    echo "  ✓ CSS import already exists in globals.css"
-  fi
+  echo "Configuring globals.css..."
+  cat > "$GLOBALS_FILE" << EOF
+@import "tailwindcss";
+@import "$CSS_IMPORT";
+EOF
+  echo "  ✓ Updated globals.css (replaced Next.js defaults)"
 else
   echo ""
-  echo "Note: globals.css not found. Manually add this to your CSS:"
+  echo "Note: globals.css not found. Create it with:"
+  echo '  @import "tailwindcss";'
   echo "  @import \"./$CSS_PATH\";"
 fi
 
+echo ""
+echo "========================================"
+echo "  Setup Complete!"
+echo "========================================"
+echo ""
+echo "Files created:"
+echo "  • .cursor/rules/nexar-design-system.mdc"
+echo "  • CLAUDE.md"
+echo "  • .windsurfrules/nexar-design-system.md"
+echo "  • $CSS_PATH (theme + fonts)"
+echo "  • $FONTS_PATH/ (20 font files)"
+echo "  • $COMPONENTS_PATH/ (for components)"
 echo ""
 echo "You're all set! Start building with your AI assistant."
 echo ""
