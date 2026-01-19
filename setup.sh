@@ -194,18 +194,43 @@ echo "  • Cursor:      .cursor/rules/nexar-design-system.mdc"
 echo "  • Claude Code: CLAUDE.md (project root)"
 echo "  • Windsurf:    .windsurfrules/nexar-design-system.md"
 echo ""
-# Determine correct import path based on globals.css location
+# Auto-add CSS import to globals.css
+GLOBALS_FILE=""
 if [ -f "$PROJECT_DIR/src/app/globals.css" ]; then
+  GLOBALS_FILE="$PROJECT_DIR/src/app/globals.css"
   CSS_IMPORT="../styles/nexar-theme.css"
 elif [ -f "$PROJECT_DIR/app/globals.css" ]; then
+  GLOBALS_FILE="$PROJECT_DIR/app/globals.css"
   CSS_IMPORT="../styles/nexar-theme.css"
-else
-  CSS_IMPORT="./$CSS_PATH"
 fi
 
-echo "Next step:"
-echo "  Add this to your globals.css (after @import \"tailwindcss\"):"
-echo "  @import \"$CSS_IMPORT\";"
+if [ -n "$GLOBALS_FILE" ]; then
+  # Check if import already exists
+  if ! grep -q "nexar-theme.css" "$GLOBALS_FILE"; then
+    echo "Updating globals.css..."
+    # Add import after @import "tailwindcss" line
+    if grep -q '@import "tailwindcss"' "$GLOBALS_FILE"; then
+      sed -i.bak 's|@import "tailwindcss";|@import "tailwindcss";\n@import "'"$CSS_IMPORT"'";|' "$GLOBALS_FILE"
+      rm -f "$GLOBALS_FILE.bak"
+      echo "  ✓ Added CSS import to globals.css"
+    elif grep -q "@import 'tailwindcss'" "$GLOBALS_FILE"; then
+      sed -i.bak "s|@import 'tailwindcss';|@import 'tailwindcss';\n@import '$CSS_IMPORT';|" "$GLOBALS_FILE"
+      rm -f "$GLOBALS_FILE.bak"
+      echo "  ✓ Added CSS import to globals.css"
+    else
+      # Tailwind import not found, add at top of file
+      echo "@import \"$CSS_IMPORT\";" | cat - "$GLOBALS_FILE" > temp && mv temp "$GLOBALS_FILE"
+      echo "  ✓ Added CSS import to globals.css (at top)"
+    fi
+  else
+    echo "  ✓ CSS import already exists in globals.css"
+  fi
+else
+  echo ""
+  echo "Note: globals.css not found. Manually add this to your CSS:"
+  echo "  @import \"./$CSS_PATH\";"
+fi
+
 echo ""
-echo "Then start building! Ask your AI to create UI components."
+echo "You're all set! Start building with your AI assistant."
 echo ""
