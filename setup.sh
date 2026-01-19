@@ -44,19 +44,28 @@ echo ""
 # Detect current directory
 PROJECT_DIR=$(pwd)
 
+# Check if this is an empty folder (no package.json)
+if [ ! -f "$PROJECT_DIR/package.json" ]; then
+  echo "No project found. Creating Next.js app..."
+  echo ""
+
+  # Check if npx is available
+  if ! command -v npx &> /dev/null; then
+    echo "  ✗ npx not found. Please install Node.js first:"
+    echo "    https://nodejs.org/"
+    echo ""
+    exit 1
+  fi
+
+  # Create Next.js project in current directory
+  npx create-next-app@latest . --typescript --tailwind --eslint --app --src-dir --import-alias "@/*" --use-npm --yes
+
+  echo ""
+  echo "  ✓ Next.js project created"
+fi
+
 # Validate project structure
 echo "Checking project requirements..."
-
-# Check for React (package.json with react dependency)
-if [ ! -f "$PROJECT_DIR/package.json" ]; then
-  echo "  ✗ No package.json found"
-  echo ""
-  echo "This doesn't appear to be a Node.js project."
-  echo "Please run this from your project root, or create a new project:"
-  echo "  npx create-next-app@latest my-app"
-  echo ""
-  exit 1
-fi
 
 # Check for React dependency
 if ! grep -q '"react"' "$PROJECT_DIR/package.json"; then
