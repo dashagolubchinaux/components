@@ -329,6 +329,7 @@ public mirror and append after `@import "tailwindcss";`.
 The token file defines:
 
 **Layer 1 — Primitives** (theme-independent, brand-canonical hex):
+- `--white` (#FFFFFF) and `--black` (#000000) — pure endpoints
 - `--purple-50 … --purple-900` (primary brand)
 - `--teal-50 … --teal-900` (secondary · `teal-400` brand-locked)
 - `--pink-50 … --pink-900` (tertiary · `pink-300` brand-locked · web-only)

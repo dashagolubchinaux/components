@@ -198,6 +198,10 @@
      brand-canonical color identities, not UI roles.
      ────────────────────────────────────────────────────────────────── */
 
+  /* Pure — absolute endpoints */
+  --white: #FFFFFF;
+  --black: #000000;
+
   /* Purple — primary brand */
   --purple-50:  #F2F0FF;
   --purple-100: #D8D3FF;
@@ -343,16 +347,16 @@
   --radius: 0.625rem;
 
   /* Core surfaces & text */
-  --background: #FAFAFA;
+  --background: var(--neutral-50);
   --foreground: var(--neutral-900);
-  --card: #FFFFFF;
+  --card: var(--white);
   --card-foreground: var(--neutral-900);
-  --popover: #FFFFFF;
+  --popover: var(--white);
   --popover-foreground: var(--neutral-700);
 
   /* Brand */
   --primary: var(--purple-500);
-  --primary-foreground: #FFFFFF;
+  --primary-foreground: var(--white);
   --secondary: oklch(0.967 0.001 286.375);
   --secondary-foreground: var(--neutral-900);
   --accent: oklch(0.967 0.001 286.375);
@@ -373,13 +377,13 @@
 
   /* Status — solid */
   --destructive: var(--destructive-500);
-  --destructive-foreground: #FFFFFF;
+  --destructive-foreground: var(--white);
   --success: var(--success-500);
-  --success-foreground: #FFFFFF;
+  --success-foreground: var(--white);
   --warning: var(--warning-500);
   --warning-foreground: var(--neutral-900);
   --info: var(--info-500);
-  --info-foreground: #FFFFFF;
+  --info-foreground: var(--white);
 
   /* Status — tinted (50 bg + 700 fg pattern for badges/alerts) */
   --destructive-muted: var(--destructive-50);
@@ -636,6 +640,9 @@
 
   /* Primitives — exposed as Tailwind utilities.
      Use these only for data-viz, illustrations, marketing surfaces. */
+  --color-white: var(--white);
+  --color-black: var(--black);
+
   --color-purple-50:  var(--purple-50);
   --color-purple-100: var(--purple-100);
   --color-purple-200: var(--purple-200);
