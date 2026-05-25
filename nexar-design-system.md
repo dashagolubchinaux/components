@@ -28,21 +28,11 @@ You are building UI for a project that uses the **Nexar Design System**. Follow 
 
 ## Quick Reference
 
-**BRAND COLOR: PURPLE** — Use `bg-primary`, `text-primary`, `border-primary` for:
-- Primary buttons (default `<Button>` variant)
-- Active/selected states
-- Focus rings
-- Links
-- Any interactive highlight
-
-**Never use black for primary actions or active states.**
-
 | Property | Value |
 |----------|-------|
 | **Heading font** | `font-heading` (Hellix) — h1, h2, h3, all titles |
 | **Body font** | `font-sans` (Roobert) — everything else |
 | **Primary color** | Purple via `bg-primary` |
-| **Primary CTA button** | `<Button>` (default variant) — PURPLE, not black |
 | **Default radius** | `rounded-xl` (cards), `rounded-lg` (smaller) |
 | **Icon sizes** | `size-4` (16px) or `size-5` (20px) |
 | **Card padding** | `p-6` or `p-8` |
@@ -54,34 +44,13 @@ You are building UI for a project that uses the **Nexar Design System**. Follow 
 
 ## CRITICAL RULES
 
-### Component Decision Tree (MUST FOLLOW)
-
-**Before creating ANY UI component, check this list:**
-
-```
-EXISTING COMPONENTS (fetch from repo, DO NOT recreate):
-Button, Input, Textarea, Label, Card, Badge, Avatar, Separator, Skeleton,
-Spinner, Kbd, Checkbox, Switch, RadioGroup, Select, NativeSelect, Combobox,
-MultiSelect, Slider, InputOTP, DatePicker, Calendar, Form, Field, FormField,
-FormDescription, Dialog, Sheet, AlertDialog, Drawer, Popover, HoverCard,
-Tooltip, DropdownMenu, ContextMenu, Menubar, Command, Tabs, Accordion,
-Collapsible, NavigationMenu, Breadcrumb, Pagination, Sidebar, Table,
-DataTable, ScrollArea, Progress, Chart, AspectRatio, Carousel, Empty,
-Alert, Resizable, ButtonGroup, InputGroup, Toggle, ToggleGroup, Sonner
-```
-
-**Decision:**
-1. **Component IS in the list above?** → FETCH it from `https://raw.githubusercontent.com/dashagolubchinaux/components/main/ui/[component].tsx` and save to `src/components/ui/`. DO NOT build your own version.
-2. **Component is NOT in the list?** → Create it yourself following the design system styles (colors, fonts, spacing, radius from this file).
-
-### Other Rules
-
-1. **Use exact Tailwind classes** — They map to CSS variables
-2. **Never import from `@getnexar/design-system`** — The package doesn't exist in user projects
-3. **UI elements must use CSS variables** — Never hardcode colors for UI chrome
-4. **Follow the spacing scale** — No arbitrary spacing values
-5. **Include all interaction states** — hover, focus-visible, active, disabled
-6. **Use `font-heading` for all headings** — h1, h2, h3, card titles, modal titles
+1. **Fetch components from repo** — Get component code from the Nexar repo (see Component Library section)
+2. **Use exact Tailwind classes** — They map to CSS variables
+3. **Never import from `@getnexar/design-system`** — The package doesn't exist in user projects
+4. **UI elements must use CSS variables** — Never hardcode colors for UI chrome
+5. **Follow the spacing scale** — No arbitrary spacing values
+6. **Include all interaction states** — hover, focus-visible, active, disabled
+7. **Use `font-heading` for all headings** — h1, h2, h3, card titles, modal titles
 
 ---
 
@@ -174,30 +143,48 @@ Use Tailwind's spacing scale. **No arbitrary values.**
 
 ## COLOR USAGE
 
-### UI Elements — Use CSS Variables (Required)
+The color system is two-layer:
+
+- **Layer 1 — Primitives** (`--purple-500`, `--success-50`, `--data-lime-200`…) are
+  brand-canonical hex values. 11 families × 10 steps. Theme-independent (same hex
+  in light and dark). Use only for data-viz, illustrations, marketing surfaces.
+- **Layer 2 — Semantic tokens** (`--primary`, `--background`, `--success`…) map to
+  primitives and shift between light and dark. **UI chrome must use these.**
+
+### UI Elements — Use Semantic Tokens (Required)
 
 | Element | Use |
 |---------|-----|
-| Backgrounds | `bg-background`, `bg-card`, `bg-muted` |
+| Backgrounds | `bg-background`, `bg-card`, `bg-popover`, `bg-muted` |
 | Text | `text-foreground`, `text-muted-foreground` |
 | Borders | `border-border`, `border-input` |
-| Interactive | `bg-primary`, `bg-secondary`, `bg-accent` |
-| Status | `text-destructive`, `bg-destructive` |
+| Brand | `bg-primary`, `bg-secondary`, `bg-accent`, `bg-brand-teal`, `bg-brand-pink` |
+| Status (solid) | `bg-success`, `bg-warning`, `bg-info`, `bg-destructive` (+ `text-*-foreground`) |
+| Status (tinted) | `bg-success-muted text-success-muted-foreground` (same for warning, info, destructive) |
+| Data-viz semantic | `bg-data-up`, `bg-data-down` for trending charts |
 
-### Creative Elements — Flexibility OK
+### Component variants
 
-For illustrations, charts, decorative elements:
-1. **First**: Use palette (`--chart-1` to `--chart-5`, `--primary`, etc.)
-2. **Extend**: Colors that complement purple palette
-3. **Custom**: OK when needed, maintain harmony
+`Badge` and `Alert` ship with `success` / `warning` / `info` / `destructive` variants
+that resolve to the tinted-on-tint pattern. Prefer these over composing classes by hand.
 
-**Complementary colors:**
-```css
-oklch(0.55 0.15 200)  /* Teal */
-oklch(0.55 0.15 150)  /* Green */
-oklch(0.55 0.18 320)  /* Pink */
-oklch(0.55 0.12 60)   /* Gold */
-```
+### Creative Elements — Primitives OK
+
+For illustrations, marketing surfaces, dashboards with multiple series, brand graphics:
+
+1. **First**: Reach for a primitive step — `bg-purple-100`, `text-success-700`,
+   `fill-data-lime-200`. The full 11 × 10 grid is available as Tailwind utilities.
+2. **Brand-locked anchors** (must not be substituted):
+   - `teal-400` (#23E7D8) — secondary brand · same in light/dark
+   - `pink-300` (#C084FC) — tertiary brand · web-only · same in light/dark
+   - `neutral-dark-900` (#060612) — dark theme canvas
+   - `data-lime-200` (#9CFF66) and `data-magenta-400` (#FF3D8E) — dark-mode trend anchors
+3. **Chart components** (`--chart-1`..`--chart-5`) remain monochromatic purple for
+   backward compatibility. For up/down trend semantic use `--data-up` and
+   `--data-down`; for multi-series unrelated colors use primitives directly.
+
+**Forbidden:** hardcoded hex outside the primitive layer (e.g. `bg-[#7c3aed]`,
+`text-green-600`). Always go through a token.
 
 ---
 
@@ -327,160 +314,56 @@ export function cn(...inputs: ClassValue[]) {
 ```
 
 ### 3. CSS Variables (globals.css)
+
+Import the full token sheet — it ships the two-layer architecture (primitives +
+semantic tokens, light + dark, Tailwind `@theme` mapping, and base layer):
+
 ```css
 @import "tailwindcss";
-
-:root {
-  --font-sans: "Roobert", ui-sans-serif, system-ui, sans-serif;
-  --font-heading: "Hellix", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: ui-monospace, SFMono-Regular, monospace;
-  --radius: 0.625rem;
-  --background: oklch(0.97 0.001 285);
-  --foreground: oklch(0.141 0.004 285.823);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.141 0.004 285.823);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.37 0.012 285.805);
-  --primary: oklch(0.547 0.231 287.967);
-  --primary-foreground: oklch(1 0 0);
-  --secondary: oklch(0.967 0.001 286.375);
-  --secondary-foreground: oklch(0.141 0.004 285.823);
-  --muted: oklch(0.967 0.001 286.375);
-  --muted-foreground: oklch(0.556 0.013 286.067);
-  --accent: oklch(0.967 0.001 286.375);
-  --accent-foreground: oklch(0.141 0.004 285.823);
-  --destructive: oklch(0.58 0.234 23.283);
-  --border: oklch(0.92 0.004 286.32);
-  --input: oklch(0.92 0.004 286.32);
-  --ring: oklch(0.397 0.196 283.962);
-  --badge-primary-filled: oklch(0.96 0.04 285);
-  --badge-primary-text: oklch(0.55 0.22 285);
-  --label: oklch(0.46 0.012 286);
-  --overlay: oklch(0.141 0.004 285.823 / 0.5);
-  --button-primary-border: oklch(0.35 0.18 285);
-  --button-primary-shadow-inner: oklch(0.35 0.18 285);
-  --button-primary-shadow-outer: oklch(0.65 0.2 285);
-  --button-primary-hover: oklch(0.35 0.18 285);
-  --avatar-1: oklch(0.547 0.231 287.967);
-  --avatar-2: oklch(0.55 0.2 280);
-  --avatar-3: oklch(0.55 0.2 320);
-  --avatar-4: oklch(0.55 0.2 20);
-  --avatar-5: oklch(0.55 0.2 150);
-  --avatar-6: oklch(0.55 0.2 250);
-  --avatar-7: oklch(0.55 0.15 80);
-  --avatar-8: oklch(0.50 0.15 160);
-  --chart-1: oklch(0.462 0.22 284.15);
-  --chart-2: oklch(0.295 0.17 284.15);
-  --chart-3: oklch(0.75 0.11 284.15);
-  --chart-4: oklch(0.19 0.08 284.15);
-  --chart-5: oklch(0.60 0.18 284.15);
-  --sidebar: oklch(0.20 0.08 275);
-  --sidebar-foreground: oklch(1 0 0);
-  --sidebar-primary: oklch(0.547 0.231 287.967);
-  --sidebar-primary-foreground: oklch(1 0 0);
-  --sidebar-accent: oklch(0.30 0.10 280);
-  --sidebar-accent-foreground: oklch(1 0 0);
-  --sidebar-border: oklch(0.35 0.08 280);
-  --sidebar-ring: oklch(0.547 0.231 287.967);
-  --sidebar-muted: oklch(0.75 0.02 280);
-  --sidebar-input: oklch(0.25 0.06 275);
-}
-
-.dark {
-  --background: oklch(0.14 0.05 285);
-  --foreground: oklch(0.96 0 0);
-  --card: oklch(0.19 0.08 284.15);
-  --card-foreground: oklch(0.98 0 0);
-  --popover: oklch(0.19 0.08 284.15);
-  --popover-foreground: oklch(0.98 0 0);
-  --primary: oklch(0.60 0.18 284.15);
-  --primary-foreground: oklch(1 0 0);
-  --secondary: oklch(0.24 0.12 284.15);
-  --secondary-foreground: oklch(0.98 0 0);
-  --muted: oklch(0.24 0.12 284.15);
-  --muted-foreground: oklch(0.75 0.11 284.15);
-  --accent: oklch(0.24 0.12 284.15);
-  --accent-foreground: oklch(0.98 0 0);
-  --destructive: oklch(0.62 0.24 23.283);
-  --border: oklch(0.24 0.12 284.15);
-  --input: oklch(0.24 0.12 284.15);
-  --ring: oklch(0.60 0.18 284.15);
-  --button-primary-border: oklch(0.40 0.18 285);
-  --button-primary-shadow-inner: oklch(0.40 0.18 285);
-  --button-primary-shadow-outer: oklch(0.70 0.18 285);
-  --button-primary-hover: oklch(0.45 0.18 285);
-}
-
-@theme inline {
-  --font-sans: var(--font-sans);
-  --font-heading: var(--font-heading);
-  --font-mono: var(--font-mono);
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-destructive: var(--destructive);
-  --color-border: var(--border);
-  --color-input: var(--input);
-  --color-ring: var(--ring);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-badge-primary-filled: var(--badge-primary-filled);
-  --color-badge-primary-text: var(--badge-primary-text);
-  --color-label: var(--label);
-  --color-overlay: var(--overlay);
-  --color-button-primary-border: var(--button-primary-border);
-  --color-button-primary-shadow-inner: var(--button-primary-shadow-inner);
-  --color-button-primary-shadow-outer: var(--button-primary-shadow-outer);
-  --color-button-primary-hover: var(--button-primary-hover);
-  --color-avatar-1: var(--avatar-1);
-  --color-avatar-2: var(--avatar-2);
-  --color-avatar-3: var(--avatar-3);
-  --color-avatar-4: var(--avatar-4);
-  --color-avatar-5: var(--avatar-5);
-  --color-avatar-6: var(--avatar-6);
-  --color-avatar-7: var(--avatar-7);
-  --color-avatar-8: var(--avatar-8);
-  --color-chart-1: var(--chart-1);
-  --color-chart-2: var(--chart-2);
-  --color-chart-3: var(--chart-3);
-  --color-chart-4: var(--chart-4);
-  --color-chart-5: var(--chart-5);
-  --color-sidebar: var(--sidebar);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-ring: var(--sidebar-ring);
-  --color-sidebar-muted: var(--sidebar-muted);
-  --color-sidebar-input: var(--sidebar-input);
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-  --radius-2xl: calc(var(--radius) + 8px);
-  --radius-3xl: calc(var(--radius) + 12px);
-  --radius-4xl: calc(var(--radius) + 16px);
-}
-
-@custom-variant dark (&:is(.dark *));
-
-@layer base {
-  * { @apply border-border outline-ring/50; }
-  body { @apply bg-background text-foreground; }
-  h1, h2, h3 { font-family: var(--font-heading); }
-}
+@import "@getnexar/design-system/styles.css";
 ```
+
+Or, for projects that vendor the tokens directly, copy `nexar-theme.css` from the
+public mirror and append after `@import "tailwindcss";`.
+
+The token file defines:
+
+**Layer 1 — Primitives** (theme-independent, brand-canonical hex):
+- `--purple-50 … --purple-900` (primary brand)
+- `--teal-50 … --teal-900` (secondary · `teal-400` brand-locked)
+- `--pink-50 … --pink-900` (tertiary · `pink-300` brand-locked · web-only)
+- `--neutral-50 … --neutral-900` (light grayscale)
+- `--neutral-dark-50 … --neutral-dark-900` (dark grayscale · `900` brand-locked)
+- `--success-50 … --success-900`
+- `--destructive-50 … --destructive-900`
+- `--warning-50 … --warning-900`
+- `--info-50 … --info-900`
+- `--data-lime-50 … --data-lime-900` (trending-up · `200` brand-locked dark)
+- `--data-magenta-50 … --data-magenta-900` (trending-down · `400` brand-locked dark)
+
+**Layer 2 — Semantic tokens** (shift between light & dark):
+
+| Light theme | Token | Dark theme |
+|---|---|---|
+| `#FAFAFA` | `--background` | `var(--neutral-dark-900)` |
+| `#FFFFFF` | `--card` | `var(--neutral-dark-800)` |
+| `var(--neutral-900)` | `--foreground` | `var(--neutral-dark-50)` |
+| `var(--purple-500)` | `--primary` | `var(--purple-300)` |
+| `var(--neutral-200)` | `--border` | `var(--neutral-dark-700)` |
+| `var(--success-500)` | `--success` | `var(--success-300)` |
+| `var(--destructive-500)` | `--destructive` | `var(--destructive-300)` |
+| `var(--warning-500)` | `--warning` | `var(--warning-300)` |
+| `var(--info-500)` | `--info` | `var(--info-300)` |
+| `var(--data-lime-500)` | `--data-up` | `var(--data-lime-200)` |
+| `var(--data-magenta-500)` | `--data-down` | `var(--data-magenta-400)` |
+
+Each status role also has `--*-foreground`, `--*-muted`, and `--*-muted-foreground`
+companions for tinted backgrounds.
+
+Legacy tokens (`--sidebar-*`, `--avatar-1..8`, `--chart-1..5`, `--badge-primary-*`,
+`--button-primary-*`, `--label`, `--overlay`) are preserved unchanged.
+
+See [`nexar-theme.css`](./nexar-theme.css) for the complete authoritative file.
 
 ### 4. Component Dependencies
 

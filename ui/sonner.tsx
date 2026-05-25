@@ -18,9 +18,9 @@ const Toaster = ({ ...props }: ToasterProps) => {
       theme={theme as ToasterProps["theme"]}
       className="toaster group"
       icons={{
-        success: <CheckCircle weight="fill" className="size-5 text-green-600" />,
-        info: <Info weight="fill" className="size-5 text-primary" />,
-        warning: <Warning weight="fill" className="size-5 text-yellow-600" />,
+        success: <CheckCircle weight="fill" className="size-5 text-success" />,
+        info: <Info weight="fill" className="size-5 text-info" />,
+        warning: <Warning weight="fill" className="size-5 text-warning" />,
         error: <XCircle weight="fill" className="size-5 text-destructive" />,
         loading: <CircleNotch className="size-5 animate-spin text-primary" />,
       }}

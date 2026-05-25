@@ -1,15 +1,32 @@
-/* Nexar Design System Theme
+/**
+ * Design System Styles - Complete Tailwind v4 Configuration
  * Version: 1.4.0
  *
- * Add this to your project's globals.css after @import "tailwindcss";
- * Or import directly: @import "./styles/nexar-theme.css";
+ * This file contains everything needed for the design system to work:
+ * - Font definitions
+ * - CSS variables (light & dark themes) — two-layer architecture
+ * - Tailwind v4 @theme configuration
+ * - Base layer styles
+ *
+ * Import this AFTER @import "tailwindcss" in your globals.css.
+ *
+ * ─────────────────────────────────────────────────────────────────────
+ * TWO-LAYER ARCHITECTURE
+ *
+ * Layer 1 — Primitives  (--purple-500, --success-50, --data-lime-200…)
+ *   Theme-independent brand-canonical hex values. 11 families × 10 steps.
+ *   Use directly only for data-viz, illustrations, marketing surfaces.
+ *
+ * Layer 2 — Semantic tokens  (--primary, --background, --success…)
+ *   Map to primitives, shift between :root (light) and .dark.
+ *   Components MUST use these — never reach for primitives in UI chrome.
+ * ─────────────────────────────────────────────────────────────────────
  */
 
 /* =============================================================================
    FONT DEFINITIONS
    ============================================================================= */
 
-/* Hellix - Heading font */
 @font-face {
   font-family: "Hellix";
   src: url("./fonts/Hellix-Thin.otf") format("opentype");
@@ -74,7 +91,6 @@
   font-display: swap;
 }
 
-/* Roobert - Body font */
 @font-face {
   font-family: "Roobert";
   src: url("./fonts/Roobert-Light.otf") format("opentype");
@@ -172,11 +188,152 @@
 }
 
 /* =============================================================================
-   DESIGN TOKENS
+   CSS VARIABLES — LIGHT THEME (Default)
    ============================================================================= */
 
-/* Nexar Design System Tokens */
 :root {
+  /* ──────────────────────────────────────────────────────────────────
+     LAYER 1 — PRIMITIVES
+     Theme-independent. Same hex in :root and .dark — these are the
+     brand-canonical color identities, not UI roles.
+     ────────────────────────────────────────────────────────────────── */
+
+  /* Purple — primary brand */
+  --purple-50:  #F2F0FF;
+  --purple-100: #D8D3FF;
+  --purple-200: #B7ADFF;
+  --purple-300: #9886FF;
+  --purple-400: #8265F5;
+  --purple-500: #7248EC;
+  --purple-600: #5331B1;
+  --purple-700: #3A1F83;
+  --purple-800: #28125E;
+  --purple-900: #130337;
+
+  /* Teal — secondary brand · brand-locked at step 400 */
+  --teal-50:  #E0FCF8;
+  --teal-100: #BEF9F1;
+  --teal-200: #95F2E7;
+  --teal-300: #6EEDDF;
+  --teal-400: #23E7D8; /* BRAND-LOCKED across light & dark */
+  --teal-500: #00C4B4;
+  --teal-600: #00897D;
+  --teal-700: #005850;
+  --teal-800: #00312C;
+  --teal-900: #001916;
+
+  /* Pink — tertiary brand · brand-locked at step 300 · web-only */
+  --pink-50:  #FAEEFA;
+  --pink-100: #F3D3F5;
+  --pink-200: #E0AEE5;
+  --pink-300: #C084FC; /* BRAND-LOCKED across light & dark */
+  --pink-400: #A55EE0;
+  --pink-500: #8A3FBE;
+  --pink-600: #6D2C97;
+  --pink-700: #511D6F;
+  --pink-800: #341049;
+  --pink-900: #1B0626;
+
+  /* Neutral — light-theme grayscale */
+  --neutral-50:  #F9FAFB;
+  --neutral-100: #E9EBEE;
+  --neutral-200: #CDD1D6;
+  --neutral-300: #A9AFB5;
+  --neutral-400: #868D94;
+  --neutral-500: #6A737B;
+  --neutral-600: #4D535A;
+  --neutral-700: #363B41;
+  --neutral-800: #23272B;
+  --neutral-900: #0F1215;
+
+  /* Neutral dark — full-range scale with purple-blue undertone */
+  --neutral-dark-50:  #F1EEF9;
+  --neutral-dark-100: #D7D1E2;
+  --neutral-dark-200: #B6ACC8;
+  --neutral-dark-300: #948AAA;
+  --neutral-dark-400: #74688D;
+  --neutral-dark-500: #564D70;
+  --neutral-dark-600: #3B3552;
+  --neutral-dark-700: #251F37;
+  --neutral-dark-800: #150F21;
+  --neutral-dark-900: #060612; /* BRAND-LOCKED dark canvas */
+
+  /* Success */
+  --success-50:  #E2FEE6;
+  --success-100: #C3EECA;
+  --success-200: #9AD8A4;
+  --success-300: #6EC27F;
+  --success-400: #46B162;
+  --success-500: #16A34A;
+  --success-600: #007631;
+  --success-700: #00521D;
+  --success-800: #003209;
+  --success-900: #001901;
+
+  /* Destructive */
+  --destructive-50:  #FFE8E3;
+  --destructive-100: #FFCDC6;
+  --destructive-200: #FFA9A0;
+  --destructive-300: #FF837A;
+  --destructive-400: #F7625C;
+  --destructive-500: #EF4444;
+  --destructive-600: #B02A2C;
+  --destructive-700: #7E1518;
+  --destructive-800: #500006;
+  --destructive-900: #2D0000;
+
+  /* Warning — under 5% usage budget */
+  --warning-50:  #FFF1D8;
+  --warning-100: #FFE3BC;
+  --warning-200: #FFCF95;
+  --warning-300: #FDBB6C;
+  --warning-400: #F9AB44;
+  --warning-500: #F59E0B;
+  --warning-600: #B06D00;
+  --warning-700: #794600;
+  --warning-800: #401B00;
+  --warning-900: #230900;
+
+  /* Info */
+  --info-50:  #E2F6FF;
+  --info-100: #BFDDFF;
+  --info-200: #91BBFF;
+  --info-300: #6598FE;
+  --info-400: #427BF4;
+  --info-500: #2563EB;
+  --info-600: #1647B0;
+  --info-700: #0B3082;
+  --info-800: #051F5D;
+  --info-900: #000C37;
+
+  /* Data lime — trending-up · brand-locked dark at step 200 */
+  --data-lime-50:  #F2FFE1;
+  --data-lime-100: #DFFAB7;
+  --data-lime-200: #9CFF66; /* BRAND-LOCKED dark anchor */
+  --data-lime-300: #71E03C;
+  --data-lime-400: #50C314;
+  --data-lime-500: #3DAB12;
+  --data-lime-600: #2C8400;
+  --data-lime-700: #1E6100;
+  --data-lime-800: #133C00;
+  --data-lime-900: #081E00;
+
+  /* Data magenta — trending-down · brand-locked dark at step 400 */
+  --data-magenta-50:  #FFE9F2;
+  --data-magenta-100: #FFCEDF;
+  --data-magenta-200: #FFA5C3;
+  --data-magenta-300: #FF74A4;
+  --data-magenta-400: #FF3D8E; /* BRAND-LOCKED dark anchor */
+  --data-magenta-500: #D6256B;
+  --data-magenta-600: #A91250;
+  --data-magenta-700: #7B0036;
+  --data-magenta-800: #4F0020;
+  --data-magenta-900: #2A000F;
+
+  /* ──────────────────────────────────────────────────────────────────
+     LAYER 2 — SEMANTIC TOKENS (LIGHT)
+     ────────────────────────────────────────────────────────────────── */
+
   /* Fonts */
   --font-sans: "Roobert", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-heading: "Hellix", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -185,25 +342,58 @@
   /* Border radius */
   --radius: 0.625rem;
 
-  /* Core colors */
-  --background: oklch(0.97 0.001 285);
-  --foreground: oklch(0.141 0.004 285.823);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.141 0.004 285.823);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.37 0.012 285.805);
-  --primary: oklch(0.547 0.231 287.967);
-  --primary-foreground: oklch(1 0 0);
+  /* Core surfaces & text */
+  --background: #FAFAFA;
+  --foreground: var(--neutral-900);
+  --card: #FFFFFF;
+  --card-foreground: var(--neutral-900);
+  --popover: #FFFFFF;
+  --popover-foreground: var(--neutral-700);
+
+  /* Brand */
+  --primary: var(--purple-500);
+  --primary-foreground: #FFFFFF;
   --secondary: oklch(0.967 0.001 286.375);
-  --secondary-foreground: oklch(0.141 0.004 285.823);
-  --muted: oklch(0.967 0.001 286.375);
-  --muted-foreground: oklch(0.556 0.013 286.067);
+  --secondary-foreground: var(--neutral-900);
   --accent: oklch(0.967 0.001 286.375);
-  --accent-foreground: oklch(0.141 0.004 285.823);
-  --destructive: oklch(0.58 0.234 23.283);
-  --border: oklch(0.92 0.004 286.32);
-  --input: oklch(0.92 0.004 286.32);
-  --ring: oklch(0.397 0.196 283.962);
+  --accent-foreground: var(--neutral-900);
+
+  /* Brand-locked accents (same hex in both themes) */
+  --brand-teal: var(--teal-400);
+  --brand-pink: var(--pink-300);
+
+  /* Muted surfaces */
+  --muted: var(--neutral-50);
+  --muted-foreground: var(--neutral-500);
+
+  /* Chrome */
+  --border: var(--neutral-200);
+  --input: var(--neutral-200);
+  --ring: var(--purple-500);
+
+  /* Status — solid */
+  --destructive: var(--destructive-500);
+  --destructive-foreground: #FFFFFF;
+  --success: var(--success-500);
+  --success-foreground: #FFFFFF;
+  --warning: var(--warning-500);
+  --warning-foreground: var(--neutral-900);
+  --info: var(--info-500);
+  --info-foreground: #FFFFFF;
+
+  /* Status — tinted (50 bg + 700 fg pattern for badges/alerts) */
+  --destructive-muted: var(--destructive-50);
+  --destructive-muted-foreground: var(--destructive-700);
+  --success-muted: var(--success-50);
+  --success-muted-foreground: var(--success-700);
+  --warning-muted: var(--warning-50);
+  --warning-muted-foreground: var(--warning-700);
+  --info-muted: var(--info-50);
+  --info-muted-foreground: var(--info-700);
+
+  /* Data-viz semantics — for up/down trends in charts */
+  --data-up: var(--data-lime-500);
+  --data-down: var(--data-magenta-500);
 
   /* Badge colors */
   --badge-primary-filled: oklch(0.96 0.04 285);
@@ -231,7 +421,8 @@
   --avatar-7: oklch(0.55 0.15 80);
   --avatar-8: oklch(0.50 0.15 160);
 
-  /* Charts */
+  /* Charts — preserved monochromatic purple for backward compat.
+     For up/down trend semantic use --data-up / --data-down instead. */
   --chart-1: oklch(0.462 0.22 284.15);
   --chart-2: oklch(0.295 0.17 284.15);
   --chart-3: oklch(0.75 0.11 284.15);
@@ -239,6 +430,8 @@
   --chart-5: oklch(0.60 0.18 284.15);
 
   /* Sidebar */
+  --sidebar-gradient-top: oklch(0.30 0.12 285);
+  --sidebar-gradient-bottom: oklch(0.15 0.04 265);
   --sidebar: oklch(0.20 0.08 275);
   --sidebar-foreground: oklch(1 0 0);
   --sidebar-primary: oklch(0.547 0.231 287.967);
@@ -251,55 +444,161 @@
   --sidebar-input: oklch(0.25 0.06 275);
 }
 
-/* Dark theme */
+/* =============================================================================
+   CSS VARIABLES — DARK THEME
+   ============================================================================= */
+
 .dark {
-  --background: oklch(0.14 0.05 285);
-  --foreground: oklch(0.96 0 0);
-  --card: oklch(0.19 0.08 284.15);
-  --card-foreground: oklch(0.98 0 0);
-  --popover: oklch(0.19 0.08 284.15);
-  --popover-foreground: oklch(0.98 0 0);
-  --primary: oklch(0.60 0.18 284.15);
-  --primary-foreground: oklch(1 0 0);
+  --background: var(--neutral-dark-900);
+  --foreground: var(--neutral-dark-50);
+  --card: var(--neutral-dark-800);
+  --card-foreground: var(--neutral-dark-50);
+  --popover: var(--neutral-dark-700);
+  --popover-foreground: var(--neutral-dark-50);
+
+  --primary: var(--purple-300);
+  --primary-foreground: var(--neutral-dark-900);
   --secondary: oklch(0.24 0.12 284.15);
-  --secondary-foreground: oklch(0.98 0 0);
-  --muted: oklch(0.24 0.12 284.15);
-  --muted-foreground: oklch(0.75 0.11 284.15);
+  --secondary-foreground: var(--neutral-dark-50);
   --accent: oklch(0.24 0.12 284.15);
-  --accent-foreground: oklch(0.98 0 0);
-  --destructive: oklch(0.62 0.24 23.283);
-  --border: oklch(0.24 0.12 284.15);
-  --input: oklch(0.24 0.12 284.15);
-  --ring: oklch(0.60 0.18 284.15);
+  --accent-foreground: var(--neutral-dark-50);
+
+  /* Brand-locked accents (unchanged in dark) */
+  --brand-teal: var(--teal-400);
+  --brand-pink: var(--pink-300);
+
+  --muted: var(--neutral-dark-700);
+  --muted-foreground: var(--neutral-dark-300);
+
+  --border: var(--neutral-dark-700);
+  --input: var(--neutral-dark-700);
+  --ring: var(--purple-300);
+
+  /* Status anchors shift lighter for dark legibility */
+  --destructive: var(--destructive-300);
+  --destructive-foreground: var(--neutral-dark-900);
+  --success: var(--success-300);
+  --success-foreground: var(--neutral-dark-900);
+  --warning: var(--warning-300);
+  --warning-foreground: var(--neutral-dark-900);
+  --info: var(--info-300);
+  --info-foreground: var(--neutral-dark-900);
+
+  /* Tinted status backgrounds — color-mix overlays the status color
+     onto the surface at ~16% so the tint reads against dark canvas */
+  --destructive-muted: color-mix(in oklab, var(--destructive-300) 16%, var(--neutral-dark-800));
+  --destructive-muted-foreground: var(--destructive-300);
+  --success-muted: color-mix(in oklab, var(--success-300) 16%, var(--neutral-dark-800));
+  --success-muted-foreground: var(--success-300);
+  --warning-muted: color-mix(in oklab, var(--warning-300) 16%, var(--neutral-dark-800));
+  --warning-muted-foreground: var(--warning-300);
+  --info-muted: color-mix(in oklab, var(--info-300) 16%, var(--neutral-dark-800));
+  --info-muted-foreground: var(--info-300);
+
+  /* Data-viz — dark anchors are brand-locked per palette spec */
+  --data-up: var(--data-lime-200);
+  --data-down: var(--data-magenta-400);
+
+  /* Preserved legacy tokens */
+  --badge-primary-filled: oklch(0.96 0.04 285);
+  --badge-primary-text: oklch(0.55 0.22 285);
+  --label: oklch(0.65 0.012 286);
+  --overlay: oklch(0 0 0 / 0.6);
   --button-primary-border: oklch(0.40 0.18 285);
   --button-primary-shadow-inner: oklch(0.40 0.18 285);
   --button-primary-shadow-outer: oklch(0.70 0.18 285);
   --button-primary-hover: oklch(0.45 0.18 285);
+
+  --avatar-1: oklch(0.60 0.18 284.15);
+  --avatar-2: oklch(0.55 0.2 280);
+  --avatar-3: oklch(0.55 0.2 320);
+  --avatar-4: oklch(0.55 0.2 20);
+  --avatar-5: oklch(0.55 0.2 150);
+  --avatar-6: oklch(0.55 0.2 250);
+  --avatar-7: oklch(0.55 0.15 80);
+  --avatar-8: oklch(0.50 0.15 160);
+
+  --chart-1: oklch(0.60 0.18 284.15);
+  --chart-2: oklch(0.462 0.22 284.15);
+  --chart-3: oklch(0.75 0.11 284.15);
+  --chart-4: oklch(0.78 0.08 284.15);
+  --chart-5: oklch(0.70 0.15 284.15);
+
+  --sidebar-gradient-top: oklch(0.30 0.12 285);
+  --sidebar-gradient-bottom: oklch(0.15 0.04 265);
+  --sidebar: oklch(0.20 0.08 275);
+  --sidebar-foreground: oklch(1 0 0);
+  --sidebar-primary: oklch(0.60 0.18 284.15);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.30 0.10 280);
+  --sidebar-accent-foreground: oklch(1 0 0);
+  --sidebar-border: oklch(0.35 0.08 280);
+  --sidebar-ring: oklch(0.60 0.18 284.15);
+  --sidebar-muted: oklch(0.75 0.02 280);
+  --sidebar-input: oklch(0.25 0.06 275);
 }
 
-/* Tailwind v4 theme mapping */
+/* =============================================================================
+   TAILWIND v4 THEME MAPPING
+   ============================================================================= */
+
 @theme inline {
   --font-sans: var(--font-sans);
   --font-heading: var(--font-heading);
   --font-mono: var(--font-mono);
+
+  /* Semantic — surfaces & text */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+
+  /* Semantic — brand */
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
+  --color-brand-teal: var(--brand-teal);
+  --color-brand-pink: var(--brand-pink);
+
+  /* Semantic — muted */
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
-  --color-destructive: var(--destructive);
+
+  /* Semantic — chrome */
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
+
+  /* Semantic — status (solid) */
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-info: var(--info);
+  --color-info-foreground: var(--info-foreground);
+
+  /* Semantic — status (tinted) */
+  --color-destructive-muted: var(--destructive-muted);
+  --color-destructive-muted-foreground: var(--destructive-muted-foreground);
+  --color-success-muted: var(--success-muted);
+  --color-success-muted-foreground: var(--success-muted-foreground);
+  --color-warning-muted: var(--warning-muted);
+  --color-warning-muted-foreground: var(--warning-muted-foreground);
+  --color-info-muted: var(--info-muted);
+  --color-info-muted-foreground: var(--info-muted-foreground);
+
+  /* Semantic — data-viz */
+  --color-data-up: var(--data-up);
+  --color-data-down: var(--data-down);
+
+  /* Misc */
   --color-badge-primary-filled: var(--badge-primary-filled);
   --color-badge-primary-text: var(--badge-primary-text);
   --color-label: var(--label);
@@ -308,6 +607,7 @@
   --color-button-primary-shadow-inner: var(--button-primary-shadow-inner);
   --color-button-primary-shadow-outer: var(--button-primary-shadow-outer);
   --color-button-primary-hover: var(--button-primary-hover);
+
   --color-avatar-1: var(--avatar-1);
   --color-avatar-2: var(--avatar-2);
   --color-avatar-3: var(--avatar-3);
@@ -316,11 +616,13 @@
   --color-avatar-6: var(--avatar-6);
   --color-avatar-7: var(--avatar-7);
   --color-avatar-8: var(--avatar-8);
+
   --color-chart-1: var(--chart-1);
   --color-chart-2: var(--chart-2);
   --color-chart-3: var(--chart-3);
   --color-chart-4: var(--chart-4);
   --color-chart-5: var(--chart-5);
+
   --color-sidebar: var(--sidebar);
   --color-sidebar-foreground: var(--sidebar-foreground);
   --color-sidebar-primary: var(--sidebar-primary);
@@ -331,6 +633,131 @@
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-muted: var(--sidebar-muted);
   --color-sidebar-input: var(--sidebar-input);
+
+  /* Primitives — exposed as Tailwind utilities.
+     Use these only for data-viz, illustrations, marketing surfaces. */
+  --color-purple-50:  var(--purple-50);
+  --color-purple-100: var(--purple-100);
+  --color-purple-200: var(--purple-200);
+  --color-purple-300: var(--purple-300);
+  --color-purple-400: var(--purple-400);
+  --color-purple-500: var(--purple-500);
+  --color-purple-600: var(--purple-600);
+  --color-purple-700: var(--purple-700);
+  --color-purple-800: var(--purple-800);
+  --color-purple-900: var(--purple-900);
+
+  --color-teal-50:  var(--teal-50);
+  --color-teal-100: var(--teal-100);
+  --color-teal-200: var(--teal-200);
+  --color-teal-300: var(--teal-300);
+  --color-teal-400: var(--teal-400);
+  --color-teal-500: var(--teal-500);
+  --color-teal-600: var(--teal-600);
+  --color-teal-700: var(--teal-700);
+  --color-teal-800: var(--teal-800);
+  --color-teal-900: var(--teal-900);
+
+  --color-pink-50:  var(--pink-50);
+  --color-pink-100: var(--pink-100);
+  --color-pink-200: var(--pink-200);
+  --color-pink-300: var(--pink-300);
+  --color-pink-400: var(--pink-400);
+  --color-pink-500: var(--pink-500);
+  --color-pink-600: var(--pink-600);
+  --color-pink-700: var(--pink-700);
+  --color-pink-800: var(--pink-800);
+  --color-pink-900: var(--pink-900);
+
+  --color-neutral-50:  var(--neutral-50);
+  --color-neutral-100: var(--neutral-100);
+  --color-neutral-200: var(--neutral-200);
+  --color-neutral-300: var(--neutral-300);
+  --color-neutral-400: var(--neutral-400);
+  --color-neutral-500: var(--neutral-500);
+  --color-neutral-600: var(--neutral-600);
+  --color-neutral-700: var(--neutral-700);
+  --color-neutral-800: var(--neutral-800);
+  --color-neutral-900: var(--neutral-900);
+
+  --color-neutral-dark-50:  var(--neutral-dark-50);
+  --color-neutral-dark-100: var(--neutral-dark-100);
+  --color-neutral-dark-200: var(--neutral-dark-200);
+  --color-neutral-dark-300: var(--neutral-dark-300);
+  --color-neutral-dark-400: var(--neutral-dark-400);
+  --color-neutral-dark-500: var(--neutral-dark-500);
+  --color-neutral-dark-600: var(--neutral-dark-600);
+  --color-neutral-dark-700: var(--neutral-dark-700);
+  --color-neutral-dark-800: var(--neutral-dark-800);
+  --color-neutral-dark-900: var(--neutral-dark-900);
+
+  --color-success-50:  var(--success-50);
+  --color-success-100: var(--success-100);
+  --color-success-200: var(--success-200);
+  --color-success-300: var(--success-300);
+  --color-success-400: var(--success-400);
+  --color-success-500: var(--success-500);
+  --color-success-600: var(--success-600);
+  --color-success-700: var(--success-700);
+  --color-success-800: var(--success-800);
+  --color-success-900: var(--success-900);
+
+  --color-destructive-50:  var(--destructive-50);
+  --color-destructive-100: var(--destructive-100);
+  --color-destructive-200: var(--destructive-200);
+  --color-destructive-300: var(--destructive-300);
+  --color-destructive-400: var(--destructive-400);
+  --color-destructive-500: var(--destructive-500);
+  --color-destructive-600: var(--destructive-600);
+  --color-destructive-700: var(--destructive-700);
+  --color-destructive-800: var(--destructive-800);
+  --color-destructive-900: var(--destructive-900);
+
+  --color-warning-50:  var(--warning-50);
+  --color-warning-100: var(--warning-100);
+  --color-warning-200: var(--warning-200);
+  --color-warning-300: var(--warning-300);
+  --color-warning-400: var(--warning-400);
+  --color-warning-500: var(--warning-500);
+  --color-warning-600: var(--warning-600);
+  --color-warning-700: var(--warning-700);
+  --color-warning-800: var(--warning-800);
+  --color-warning-900: var(--warning-900);
+
+  --color-info-50:  var(--info-50);
+  --color-info-100: var(--info-100);
+  --color-info-200: var(--info-200);
+  --color-info-300: var(--info-300);
+  --color-info-400: var(--info-400);
+  --color-info-500: var(--info-500);
+  --color-info-600: var(--info-600);
+  --color-info-700: var(--info-700);
+  --color-info-800: var(--info-800);
+  --color-info-900: var(--info-900);
+
+  --color-data-lime-50:  var(--data-lime-50);
+  --color-data-lime-100: var(--data-lime-100);
+  --color-data-lime-200: var(--data-lime-200);
+  --color-data-lime-300: var(--data-lime-300);
+  --color-data-lime-400: var(--data-lime-400);
+  --color-data-lime-500: var(--data-lime-500);
+  --color-data-lime-600: var(--data-lime-600);
+  --color-data-lime-700: var(--data-lime-700);
+  --color-data-lime-800: var(--data-lime-800);
+  --color-data-lime-900: var(--data-lime-900);
+
+  --color-data-magenta-50:  var(--data-magenta-50);
+  --color-data-magenta-100: var(--data-magenta-100);
+  --color-data-magenta-200: var(--data-magenta-200);
+  --color-data-magenta-300: var(--data-magenta-300);
+  --color-data-magenta-400: var(--data-magenta-400);
+  --color-data-magenta-500: var(--data-magenta-500);
+  --color-data-magenta-600: var(--data-magenta-600);
+  --color-data-magenta-700: var(--data-magenta-700);
+  --color-data-magenta-800: var(--data-magenta-800);
+  --color-data-magenta-900: var(--data-magenta-900);
+
+  /* Radii */
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -340,10 +767,21 @@
   --radius-4xl: calc(var(--radius) + 16px);
 }
 
+/* Dark mode variant for Tailwind v4 */
 @custom-variant dark (&:is(.dark *));
 
+/* =============================================================================
+   BASE LAYER STYLES
+   ============================================================================= */
+
 @layer base {
-  * { @apply border-border outline-ring/50; }
-  body { @apply bg-background text-foreground; }
-  h1, h2, h3 { font-family: var(--font-heading); }
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  h1, h2, h3 {
+    font-family: var(--font-heading);
+  }
 }

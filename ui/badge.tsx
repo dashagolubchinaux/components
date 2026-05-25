@@ -28,8 +28,17 @@ const badgeVariants = cva(
         primary: 
           "bg-[var(--badge-primary-filled)] text-[var(--badge-primary-text)] rounded-md",
         // Numeric - darker purple background, white text, circular shape
-        numeric: 
+        numeric:
           "bg-primary text-primary-foreground rounded-full",
+        // Success - tinted green background, success text
+        success:
+          "bg-success-muted text-success-muted-foreground rounded-md",
+        // Warning - tinted amber background, warning text
+        warning:
+          "bg-warning-muted text-warning-muted-foreground rounded-md",
+        // Info - tinted blue background, info text
+        info:
+          "bg-info-muted text-info-muted-foreground rounded-md",
       },
       size: {
         xs: "px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider [&>svg]:size-2.5",
