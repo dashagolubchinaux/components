@@ -186,6 +186,35 @@ For illustrations, marketing surfaces, dashboards with multiple series, brand gr
 **Forbidden:** hardcoded hex outside the primitive layer (e.g. `bg-[#7c3aed]`,
 `text-green-600`). Always go through a token.
 
+### Alignment with VERA (upstream brand bible)
+
+This product design system mirrors the canonical Nexar/VERA brand identity
+defined in **[`getnexar/nexar-design-skill`](https://github.com/getnexar/nexar-design-skill)**
+(`colors_and_type.css`, the source of truth for brand hexes, Pantone references,
+and usage rules across marketing surfaces, decks, reports, and atmosphere).
+
+The relationship:
+
+- **VERA** is dark-mode-native, brand-bible-first, used for marketing/decks/reports.
+- **This system** ships React product UI components in both light and dark themes,
+  reusing VERA's brand-locked hexes verbatim while adding a two-layer token graph
+  and scaled families (50–900) suited to component composition.
+
+**Hard rules inherited from VERA:**
+
+1. **Data-viz colors are for numeric values only.** `data-lime` and `data-magenta`
+   (Cyber Lime #9CFF66, Hot Pink #FF3D8E) signal positive/negative numeric deltas
+   in charts and stat cards. Never use them on titles, headings, body text, badges,
+   or pills. (Mirror of VERA §6 / changelog 1.0.2.)
+2. **Amber is a sanctioned caution utility, not a brand color.** Reserve `warning`
+   for genuine caution states. Budget: under 5% of UI surface. Step 500 (#F5A623)
+   mirrors VERA's `--amber`.
+3. **Light-purple `#C084FC` is web-only.** Never use `pink-300` (a.k.a. VERA's
+   `--light-purple`) in reports or PDF exports. Mirror of VERA's web-only tag.
+4. **Palette changes require an upstream change first.** New brand-canonical hexes
+   or step shifts must update VERA in `colors_and_type.css` before being added here.
+   The brand-locked anchors above are immutable from this side.
+
 ---
 
 ## LAYOUT PATTERNS
