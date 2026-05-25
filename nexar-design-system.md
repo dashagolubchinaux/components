@@ -215,6 +215,15 @@ The relationship:
    or step shifts must update VERA in `colors_and_type.css` before being added here.
    The brand-locked anchors above are immutable from this side.
 
+5. **No pure black anywhere.** `#000000` is not a system color. The dark canvas is
+   `--neutral-dark-900` (#060612) — a brand-locked near-black with a subtle
+   purple-blue undertone. Dark text on light theme is `--foreground`
+   (`--neutral-900`, #0F1215). Modal scrims and drawer overlays use `--overlay`,
+   which is a tinted near-black at ~60% opacity (`color-mix` of
+   `--neutral-dark-900` with transparent), never pure black. `bg-black` /
+   `text-black` are not exposed as Tailwind utilities. Mirror of VERA, which
+   deliberately omits `--black` from `colors_and_type.css`.
+
 ---
 
 ## LAYOUT PATTERNS
@@ -358,7 +367,8 @@ public mirror and append after `@import "tailwindcss";`.
 The token file defines:
 
 **Layer 1 — Primitives** (theme-independent, brand-canonical hex):
-- `--white` (#FFFFFF) and `--black` (#000000) — pure endpoints
+- `--white` (#FFFFFF) — universal endpoint (pure black is intentionally NOT a
+  primitive — see "No pure black" rule under Alignment with VERA)
 - `--purple-50 … --purple-900` (primary brand)
 - `--teal-50 … --teal-900` (secondary · `teal-400` brand-locked)
 - `--pink-50 … --pink-900` (tertiary · `pink-300` brand-locked · web-only)

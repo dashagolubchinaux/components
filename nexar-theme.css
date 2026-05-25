@@ -198,9 +198,10 @@
      brand-canonical color identities, not UI roles.
      ────────────────────────────────────────────────────────────────── */
 
-  /* Pure — absolute endpoints */
+  /* Pure — universal endpoint. Pure black is intentionally NOT a system
+     primitive: use --neutral-dark-900 (#060612) for dark canvas and
+     --foreground for text. See /docs/principles/colors §5. */
   --white: #FFFFFF;
-  --black: #000000;
 
   /* Purple — primary brand */
   --purple-50:  #F2F0FF;
@@ -507,7 +508,8 @@
   --badge-primary-filled: oklch(0.96 0.04 285);
   --badge-primary-text: oklch(0.55 0.22 285);
   --label: oklch(0.65 0.012 286);
-  --overlay: oklch(0 0 0 / 0.6);
+  /* Dark overlay uses neutral-dark-900 tinted at 60% — never pure black */
+  --overlay: color-mix(in oklab, var(--neutral-dark-900) 60%, transparent);
   --button-primary-border: oklch(0.40 0.18 285);
   --button-primary-shadow-inner: oklch(0.40 0.18 285);
   --button-primary-shadow-outer: oklch(0.70 0.18 285);
@@ -641,7 +643,6 @@
   /* Primitives — exposed as Tailwind utilities.
      Use these only for data-viz, illustrations, marketing surfaces. */
   --color-white: var(--white);
-  --color-black: var(--black);
 
   --color-purple-50:  var(--purple-50);
   --color-purple-100: var(--purple-100);
