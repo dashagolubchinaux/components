@@ -287,7 +287,7 @@
   --destructive-800: #500006;
   --destructive-900: #2D0000;
 
-  /* Warning — under 5% usage budget · step 500 mirrors VERA --amber */
+  /* Warning — caution states, under 5% UI budget */
   --warning-50:  #FFF1D8;
   --warning-100: #FFE3BC;
   --warning-200: #FFCF95;
